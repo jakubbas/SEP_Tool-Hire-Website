@@ -11,8 +11,15 @@ var categoriesRows = [];
 //sql = 'CREATE TABLE categories(category_id INTEGER PRIMARY KEY,category_name TEXT,category_description TEXT,category_image TEXT,category_link TEXT)';
 //db.run(sql);
 
-sql = 'UPDATE categories SET category_image = ? WHERE category_id = ?';
-db.run('UPDATE categories SET category_image = ? WHERE category_id = ?', ['/images/SheltonLogo.jpg', 1], (err) => {
+//sql = 'UPDATE categories SET category_image = ? WHERE category_id = ?';
+//db.run('UPDATE categories SET category_image = ? WHERE category_id = ?', ['/images/categories-landscaping.jpg', 5], (err) => {
+//    if (err) return console.error(err.message);
+//});
+
+
+
+sql = 'UPDATE categories SET category_name = ? WHERE category_id = ?';
+db.run('UPDATE categories SET category_name = ? WHERE category_id = ?', ['Landscaping', 5], (err) => {
     if (err) return console.error(err.message);
 });
 
