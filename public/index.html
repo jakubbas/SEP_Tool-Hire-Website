@@ -7,13 +7,6 @@
 	<title>
 		Shelton Tool-Hire
 	</title>
-	<script>
-		fetch('/api/categories')
-			.then(response => response.json())
-			.then(categories => console.log(categories));
-	</script>
-	
-
 </head>
 <body>
 
@@ -55,26 +48,64 @@
 		<h1>Categories from Database</h1>
 
 		<div class="category-boxes-container">
-			<!--<% data.forEach(category => { %>-->
-			
-			
-			
 
-			<a href>
-				<div class="category-box">
-					<p class="category-title"> <%= category.name %></p>
-					<div class="category-image">
-						<!-- Assuming 'imageURL' is the property for the image URL in your data -->
-						<img src="<%= category.imageURL %>" alt="<%= category.name %>">
-					</div>
-				</div>
-			</a>
-			
-			
-			
-			
+			<script>
 
-			<!--<% }); %>-->
+
+
+				//Fill out category container data
+
+				const dataContainer = [];
+				fetch('/api/categories')
+					.then(response => response.json())
+					.then(categories => {
+						loadData(categories);
+					});
+
+				function loadData(data) {
+
+                    const categoryContainer = document.getElementById('category-data');
+
+                    data.forEach(categoryArray => {
+
+                        console.log(categoryArray, "after");
+                        //Div for each category box.
+                        const categoryBox = document.createElement('div');
+                        categoryBox.classList.add('category-box');
+
+
+                        //Anchor
+
+                        const categoryLink = document.createElement('a');
+                        categoryLink.href = categoryArray.category_link;
+                        categoryBox.appendChild(categoryLink);
+
+                        //Title
+
+                        const categoryTitle = document.createElement('p');
+                        categoryTitle.classList.add('category-title');
+                        categoryTitle.textContent = categoryArray.category_name;
+                        categoryLink.appendChild(categoryTitle);
+
+                        //Image
+                        //const categoryImageContainer = document.createElement('div');
+                        //categoryImageContainer.classList.add('category-image');
+						const categoryImage = document.createElement('img');
+                        categoryImage.classList.add('category-image');
+                        categoryImage.src = categoryArray.category_image;
+                        categoryLink.appendChild(categoryImage);
+
+                        categoryContainer.appendChild(categoryBox);
+
+                    });
+				};
+
+				
+
+			
+			</script>
+
+			<div id="category-data" class="category-data"> </div>
 
 		</div>
 	</div>
