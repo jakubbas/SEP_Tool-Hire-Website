@@ -1,0 +1,19 @@
+{
+  "name": "team2-software-project",
+  "version": "0.0.0",
+  "description": "Team2SoftwareProject",
+  "main": "app.js",
+  "author": {
+    "name": ""
+  },
+  "devDependencies": {
+    "eslint": "^8.56.0",
+    "nodemon": "^3.0.2"
+  },
+  "eslintConfig": {},
+  "dependencies": {
+    "express": "^4.18.2",
+    "sqlite3": "^5.1.7-rc.0",
+    "uninstall": "^0.0.0"
+  }
+}
