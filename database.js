@@ -1,28 +1,39 @@
 const sqlite3 = require('sqlite3').verbose();
 const path = require('path')
 let sql;
-
 const db = new sqlite3.Database(__dirname + '/src/database.db', sqlite3.OPEN_READWRITE, (err) => { if (err) return console.error(err.message); });
+db.get("PRAGMA foreign_keys = ON")
 
 var categoriesRows = [];
-
-//db.run("DROP TABLE categories");
 
 //sql = 'CREATE TABLE categories(category_id INTEGER PRIMARY KEY,category_name TEXT,category_description TEXT,category_image TEXT,category_link TEXT)';
 //db.run(sql);
 
-//sql = 'UPDATE categories SET category_image = ? WHERE category_id = ?';
-//db.run('UPDATE categories SET category_image = ? WHERE category_id = ?', ['/images/categories-landscaping.jpg', 5], (err) => {
+//sql = 'CREATE TABLE products(product_id INTEGER PRIMARY KEY,product_name TEXT, product_description TEXT, category_id INTEGER, product_price_daily REAL, product_price_weekly REAL, product_image TEXT, product_link TEXT)';
+//db.run(sql);
+
+//db.run('drop table products');
+
+
+//sql = 'INSERT INTO products(product_name,product_description,category_id, product_price_daily, product_price_weekly, product_image, product_link) VALUES (?,?,?,?,?,?,?)';
+//db.run(sql, ["Hedge Trimmer", "Hedge Trimmer Description.", 5, 20, 80, '/images/hedge-trimmer.jpg', 'hedge-trimmer-link'], (err) => {
 //    if (err) return console.error(err.message);
 //});
 
+//sql = 'UPDATE categories SET category_link = ? WHERE category_id = ?';
+//db.run('UPDATE categories SET category_link = ? WHERE category_id = ?', ['/category-page', 1], (err) => {
+//    if (err) return console.error(err.message);
+//});
 
+//sql = 'UPDATE categories SET category_name = ? WHERE category_id = ?';
+//db.run('UPDATE categories SET category_name = ? WHERE category_id = ?', ['Landscaping', 5], (err) => {
+//    if (err) return console.error(err.message);
+//});
 
-sql = 'UPDATE categories SET category_name = ? WHERE category_id = ?';
-db.run('UPDATE categories SET category_name = ? WHERE category_id = ?', ['Landscaping', 5], (err) => {
-    if (err) return console.error(err.message);
-});
-
+//sql = 'UPDATE products SET product_image = ? WHERE product_id = ?';
+//db.run('UPDATE products SET product_image = ? WHERE product_id = ?', ['/images/products-hedge-trimmer.jpg', 18], (err) => {
+//    if (err) return console.error(err.message);
+//});
 
 //db.run(`
 //  CREATE TABLE IF NOT EXISTS categories (
@@ -50,7 +61,7 @@ db.run('UPDATE categories SET category_name = ? WHERE category_id = ?', ['Landsc
 //});
 
 
-sql = 'SELECT * FROM categories';
+sql = 'SELECT * FROM products';
 db.all(sql, [], (err, rows) => {
     if (err) return console.error(err.message);
     rows.forEach(row => {

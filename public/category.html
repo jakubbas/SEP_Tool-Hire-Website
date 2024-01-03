@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" type="text/css" href="css/styles.css" />
+	<title>
+		Shelton Tool-Hire
+	</title>
+</head>
+<body>
+
+<header>
+	<div class="logo">
+		<img src="images/SheltonLogo.jpg" alt="Logo" style="max-width: 100px;">
+	</div>
+
+	<div class="company-name">
+		Shelton Tool-Hire
+	</div>
+
+	<div class="search-container">
+		<div class="" custom-search-bar>
+			<input type="text" class="search-input" placeholder="Enter your search term">
+			<button class="search-button" onclick="performSearch()">Search</button>
+		</div>
+	</div>
+
+</header>
+
+<div class="main-container">
+	<div class="category-main">
+
+		<h1>Our Products</h1>
+
+		<div class="category-boxes-container">
+
+			<script>
+				//Fill out category container data
+
+				const dataContainer = [];
+				fetch('/api/products')
+					.then(response => response.json())
+					.then(products => {
+						loadData(products);
+					});
+
+				function loadData(data) {
+
+					const productContainer = document.getElementById('product-data');
+
+					data.forEach(productArray => {
+
+						console.log(productArray, "after");
+						//Div for each product box.
+						const productBox = document.createElement('div');
+						productBox.classList.add('category-box');
+
+
+						//Anchor
+
+						const productLink = document.createElement('a');
+						productLink.href = productArray.product_link;
+						productBox.appendChild(productLink);
+
+						//Title
+
+						const productTitle = document.createElement('p');
+						productTitle.classList.add('category-title');
+						productTitle.textContent = productArray.product_name;
+						productLink.appendChild(productTitle);
+
+						//Image
+						const productImage = document.createElement('img');
+						productImage.classList.add('category-image');
+						productImage.src = productArray.product_image;
+						productLink.appendChild(productImage);
+
+						productContainer.appendChild(productBox);
+
+					});
+				};
+
+			</script>
+
+			<div id="product-data" class="category-data"> </div>
+
+		</div>
+	</div>
+</div>
