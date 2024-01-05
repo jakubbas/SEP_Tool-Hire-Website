@@ -3,8 +3,7 @@ const path = require('path')
 const app = express();
 const sqlite3 = require('sqlite3').verbose();
 const db = new sqlite3.Database(__dirname + '/src/database.db', sqlite3.OPEN_READWRITE, (err) => { if (err) return console.error(err.message); });
-var categoriesRows = [];
-
+var currentCategory;
 
 
 app.get('/', (req, res) => {
@@ -13,6 +12,10 @@ app.get('/', (req, res) => {
 
 
 app.get('/category-page', (req, res) => {
+    //DEBUG STATEMENT HERE FOR TEST LOG
+    const categoryID = req.query.categoryID;
+    console.log("ID: ", categoryID)
+    currentCategory = categoryID;
     res.sendFile(path.join(__dirname, '/public/category.html'));
 });
 
@@ -35,7 +38,9 @@ app.get('/api/categories', (req, res) => {
 //Gets products data
 app.get('/api/products', (req, res) => {
 
-    db.all('SELECT * FROM products', (err, rows) => {
+    console.log("ID after: ", currentCategory);
+
+    db.all('SELECT * FROM products WHERE category_id = ?', [curre], (err, rows) => {
         if (err) {
             console.error('Error executing query:', err);
             res.status(500).json({ error: 'Internal Server Error' });

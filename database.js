@@ -4,8 +4,6 @@ let sql;
 const db = new sqlite3.Database(__dirname + '/src/database.db', sqlite3.OPEN_READWRITE, (err) => { if (err) return console.error(err.message); });
 db.get("PRAGMA foreign_keys = ON")
 
-var categoriesRows = [];
-
 //sql = 'CREATE TABLE categories(category_id INTEGER PRIMARY KEY,category_name TEXT,category_description TEXT,category_image TEXT,category_link TEXT)';
 //db.run(sql);
 
@@ -21,7 +19,7 @@ var categoriesRows = [];
 //});
 
 //sql = 'UPDATE categories SET category_link = ? WHERE category_id = ?';
-//db.run('UPDATE categories SET category_link = ? WHERE category_id = ?', ['/category-page', 1], (err) => {
+//db.run('UPDATE categories SET category_link = ? WHERE category_id = ?', ['/category-page?categoryID=5', 5], (err) => {
 //    if (err) return console.error(err.message);
 //});
 
@@ -61,7 +59,7 @@ var categoriesRows = [];
 //});
 
 
-sql = 'SELECT * FROM products';
+sql = 'SELECT * FROM categories';
 db.all(sql, [], (err, rows) => {
     if (err) return console.error(err.message);
     rows.forEach(row => {
