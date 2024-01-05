@@ -33,12 +33,42 @@
 <div class="main-container">
 	
 	<div class="item-list-container">
-		<div class="item-list" id="product-data">
+		<div class="item-list">
 			<h2>All Available Products</h2>
-			<ul>
-				<li><a href="#">Product1</a></li>
-				<li><a href="#">Product2</a></li>
-				<!-- Add more categories as needed -->
+			
+			<script>
+
+                fetch('/api/products/all')
+                    .then(response => response.json())
+                    .then(products => {
+                        loadProducts(products);
+                    });
+				
+                function loadProducts(data) {
+                    const productList = document.getElementById('product-data');
+
+					//Sorts through the array alphabetically
+                    data.sort((a, b) => a.product_name.localeCompare(b.product_name))
+
+
+
+					data.forEach(productArray => {
+
+                        console.log("array: ", data);
+						const list = document.createElement('li');
+						const anchor = document.createElement('a');
+
+						anchor.textContent = productArray.product_name;
+						anchor.href = productArray.product_link;
+
+						list.appendChild(anchor);
+						productList.appendChild(list);
+
+					});
+				};
+
+			</script>
+			<ul id="product-data">
 			</ul>
 		</div>
 	</div>
@@ -61,29 +91,13 @@
                         loadCategories(categories);
 					});
 
-                fetch('/api/products')
-                    .then(response => response.json())
-                    .then(products => {
-                        loadProducts(products);
-					});
-
-
-				function loadProducts(data) {
-					const productList = document.getElementById('product-data');
-
-					data.forEach(productArray => {
-						
-					}
-
-				}
-
 				function loadCategories(data) {
 
                     const categoryContainer = document.getElementById('category-data');
 
                     data.forEach(categoryArray => {
 
-                        console.log(categoryArray, "after");
+                        //console.log(categoryArray, "after");
                         //Div for each category box.
                         const categoryBox = document.createElement('div');
                         categoryBox.classList.add('category-box');

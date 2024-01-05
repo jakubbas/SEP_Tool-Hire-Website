@@ -14,7 +14,7 @@ app.get('/', (req, res) => {
 app.get('/category-page', (req, res) => {
     //DEBUG STATEMENT HERE FOR TEST LOG
     const categoryID = req.query.categoryID;
-    console.log("ID: ", categoryID)
+    //console.log("ID: ", categoryID)
     currentCategory = categoryID;
     res.sendFile(path.join(__dirname, '/public/category.html'));
 });
@@ -35,12 +35,12 @@ app.get('/api/categories', (req, res) => {
     });
 });
 
-//Gets products data
+//Gets select products data
 app.get('/api/products', (req, res) => {
 
-    console.log("ID after: ", currentCategory);
+    //console.log("ID after: ", currentCategory);
 
-    db.all('SELECT * FROM products WHERE category_id = ?', [curre], (err, rows) => {
+    db.all('SELECT * FROM products WHERE category_id = ?', [currentCategory], (err, rows) => {
         if (err) {
             console.error('Error executing query:', err);
             res.status(500).json({ error: 'Internal Server Error' });
@@ -48,7 +48,23 @@ app.get('/api/products', (req, res) => {
             res.json(rows);
         }
     });
+
 });
+
+//Gets all products data
+app.get('/api/products/all', (req, res) => {
+
+    db.all('SELECT * FROM products', (err, rows) => {
+        if (err) {
+            console.error('Error executing query:', err);
+            res.status(500).json({ error: 'Internal Server Error' });
+        } else {
+            res.json(rows);
+        }
+    });
+
+});
+
 
 app.listen(8080, () => { 
     console.log('Server is listening on port 8080');
