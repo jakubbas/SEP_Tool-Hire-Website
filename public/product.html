@@ -3,12 +3,11 @@
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<link rel="stylesheet" type="text/css" href="css/styles.css"/>
+	<link rel="stylesheet" type="text/css" href="css/productstyles.css" />
 	<title>
 		Shelton Tool-Hire
 	</title>
 </head>
-<body>
 
 <header>
 
@@ -30,33 +29,69 @@
 
 </header>
 
+<body>
 <div class="main-container">
+	<script>
+
+            const dataContainer = [];
+            fetch('/api/products/single')
+                .then(response => response.json())
+                .then(products => {
+                    loadData(products);
+				});
+
+		function loadData(data) {
+            const productContainer = document.getElementById('product-info-container');
+            //const productBox = document.createElement('div');
+
+			const productImage = document.createElement('img');
+			productImage.id = "product-image";
+			productImage.src = data[0].product_image;
+            productContainer.appendChild(productImage);
 
 
-	<div class="category-main">
+			const infoBox = document.createElement('div');
+			infoBox.id = "product-info";
+			const title = document.createElement('h2');
+            title.textContent = data[0].product_name;
+			const description = document.createElement('p');
+            description.textContent = data[0].product_description;
+
+            infoBox.appendChild(title);
+            infoBox.appendChild(description);
+            productContainer.appendChild(infoBox);
 
 
+			//productContainer.appendChild(productBox);
 
-		<div class="product-info-box">
+			}
+			
 
 
+		</script>
+		
+
+		<div id="product-info-container">
+			<!--Create this in script-->
+
+
+			<!--<img id="product-image" src="images/products-pallet-truck.jpg" alt="Product Image">
+			<div id="product-info">
+				<h2>Product Title</h2>
+				<p>Product Description goes here...</p>
+			</div>-->
 		</div>
 
-
-
-		<div class="product-cost-box">
-
-
+		<div id="product-costing-container">
+			<p>
+				Lorem ipsu
+			</p>
 		</div>
-
-
 
 	</div>
-
-
-
-
-
+<div id="reviews-section">
+	<h3>Customer Reviews</h3>
+	<!-- Add your review system here -->
 </div>
 
 </body>

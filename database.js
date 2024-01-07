@@ -28,8 +28,8 @@ db.get("PRAGMA foreign_keys = ON")
 //    if (err) return console.error(err.message);
 //});
 
-//sql = 'UPDATE products SET product_image = ? WHERE product_id = ?';
-//db.run('UPDATE products SET product_image = ? WHERE product_id = ?', ['/images/products-hedge-trimmer.jpg', 18], (err) => {
+//sql = 'UPDATE products SET product_link = ? WHERE product_id = ?';
+//db.run('UPDATE products SET product_link = ? WHERE product_id = ?', ['/product-page?productID=18', 18], (err) => {
 //    if (err) return console.error(err.message);
 //});
 
@@ -59,7 +59,7 @@ db.get("PRAGMA foreign_keys = ON")
 //});
 
 
-sql = 'SELECT * FROM categories';
+sql = 'SELECT * FROM products';
 db.all(sql, [], (err, rows) => {
     if (err) return console.error(err.message);
     rows.forEach(row => {
