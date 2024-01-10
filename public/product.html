@@ -30,15 +30,15 @@
 </header>
 
 <body>
-	<div class="main-container">
-		<script>
+<div class="main-container">
+	<script>
 			fetch('/api/products/single')
 				.then(response => response.json())
 				.then(products => {
-					loadData(products);
+					loadProduct(products);
 				});
 
-			function loadData(data) {
+			function loadProduct(data) {
 				const productContainer = document.getElementById('product-info-container');
 				//const productBox = document.createElement('div');
 
@@ -62,7 +62,13 @@
 
 				//productContainer.appendChild(productBox);
 
+
+
 			}
+
+            //Existing Reviews
+
+
 
 
 
@@ -70,20 +76,18 @@
 		</script>
 
 
-		<div id="product-info-container">
-		</div>
-
-		<div id="product-costing-container">
-			<p>
-				Costing
-			</p>
-		</div>
-
+	<div id="product-info-container">
 	</div>
 
-<div id="reviews-section">
-	<h1>Reviews</h1>
+	<div id="product-costing-container">
+		<p>
+			Costing
+		</p>
+	</div>
 
+</div>
+
+<div id="reviews-section">
 	<form id="review-form">
 		<h2>Leave a Review</h2>
 
@@ -212,6 +216,7 @@
 
 
 <div id="existing-reviews">
+	<h1 id="reviews-title">Reviews</h1>
 
 	<script>
 
@@ -220,10 +225,10 @@
 		fetch('/api/reviews')
 			.then(response => response.json())
 			.then(reviews => {
-				loadData(reviews);
+				loadReviews(reviews);
 			});
 
-		function loadData(data) {
+		function loadReviews(data) {
 
 			data.forEach(reviewArray => {
 				var reviewBox = document.createElement('div');
@@ -233,70 +238,132 @@
 				var reviewName = document.createElement('div');
 				reviewName.className = 'review-name';
 				reviewName.id = 'review-name';
+				reviewName.textContent = reviewArray.review_username;
 				reviewBox.appendChild(reviewName);
 
 				var reviewDescription = document.createElement('div');
 				reviewDescription.className = 'review-description';
 				reviewDescription.id = 'review-description';
-				reviewDescription.textContent = 'test';
+				reviewDescription.textContent = reviewArray.review_description;
 				reviewBox.appendChild(reviewDescription);
+
+				//fd
+
+				const star = '★';
 
 				var ratingFlex = document.createElement('div');
 				ratingFlex.className = 'ratingFlex';
 				ratingFlex.id = 'ratingFlex';
 
-				//fd
+                const reviewID = document.createElement('div');
+				reviewID.className = 'reviewID';
+				reviewID.textContent = reviewArray.review_id;
+				ratingFlex.appendChild(reviewID);
+				//performance-rating
+				var performanceText = document.createElement('h5');
+				performanceText.id = 'performance-rating-text';
+				performanceText.textContent = 'Performance Rating:'
+				ratingFlex.appendChild(performanceText);
+				var performanceValue = document.createElement('div');
+				performanceValue.id = 'performance-rating-value';
+				performanceValue.className = 'star-rating';
+				performanceValue.textContent = star.repeat(reviewArray.review_performance_rating);
+				ratingFlex.appendChild(performanceValue);
+
+				//customer-service-rating
+				var customerServiceText = document.createElement('h5');
+				customerServiceText.id = 'customer-service-rating-text';
+				customerServiceText.textContent = 'Customer Service Rating:'
+				ratingFlex.appendChild(customerServiceText);
+				var customerServiceValue = document.createElement('div');
+				customerServiceValue.id = 'customer-service-rating-value';
+				customerServiceValue.className = 'star-rating';
+				customerServiceValue.textContent = star.repeat(reviewArray.review_customer_service_rating);
+				ratingFlex.appendChild(customerServiceValue);
+
+				//support-service-rating
+                var supportServiceText = document.createElement('h5');
+                supportServiceText.id = 'support-service-rating-text';
+                supportServiceText.textContent = 'Support Service Rating:'
+                ratingFlex.appendChild(supportServiceText);
+                var supportServiceValue = document.createElement('div');
+                supportServiceValue.id = 'support-service-rating-value';
+                supportServiceValue.className = 'star-rating';
+                supportServiceValue.textContent = star.repeat(reviewArray.review_support_service_rating);
+                ratingFlex.appendChild(supportServiceValue);
+
+				//after-sale-support-rating
+                var afterSaleSupportText = document.createElement('h5');
+                afterSaleSupportText.id = 'after-sale-support-rating-text';
+                afterSaleSupportText.textContent = 'After Sale Support Rating:'
+                ratingFlex.appendChild(afterSaleSupportText);
+                var afterSaleSupportValue = document.createElement('div');
+                afterSaleSupportValue.id = 'after-sale-support-rating';
+                afterSaleSupportValue.className = 'star-rating';
+                afterSaleSupportValue.textContent = star.repeat(reviewArray.review_after_sale_support_service_rating);
+                ratingFlex.appendChild(afterSaleSupportValue);
 
 				reviewBox.appendChild(ratingFlex);
+
+				var reviewDate = document.createElement('div');
+				reviewDate.className = 'review-date';
+				reviewDate.id = 'review-date';
+				reviewDate.textContent = reviewArray.review_date;
+				reviewBox.appendChild(reviewDate);
 
 				reviewContainer.appendChild(reviewBox);
 
 			});
 
+            functionCreateReplyBox();
 
-			}
 
 
+		}
+
+        function functionCreateReplyBox(){
+            const reviews = document.getElementsByClassName('review-box');
+            Array.from(reviews).forEach(review => {
+
+                var replyBox = document.createElement('div');
+				replyBox.className = 'reply-box';
+
+                var replyButton = document.createElement('div');
+                replyButton.className = 'reply-button';
+                replyButton.textContent = 'Reply';
+
+                var usernameInput = document.createElement('textarea');
+                usernameInput.type = 'text';
+				usernameInput.placeholder = 'Your Username';
+				usernameInput.id = 'reply-name';
+				usernameInput.rows = 1;
+                var replyInput = document.createElement('textarea');
+				replyInput.placeholder = 'Your Reply';
+				
+
+                var submitButton = document.createElement('button');
+				submitButton.textContent = 'Submit Reply';
+				submitButton.type = 'submit';
+
+                replyBox.appendChild(usernameInput);
+                replyBox.appendChild(replyInput);
+				replyBox.appendChild(submitButton);
+
+                review.appendChild(replyButton);
+				review.appendChild(replyBox);
+
+                replyButton.addEventListener('click', function () {
+                    replyBox.style.display = replyBox.style.display === 'block' ? 'none' : 'block';
+                });
+            });
+		}
 
 
 	</script>
-	
-	
-	
-
-	<!--<div class="review-box" id="review-box">
-			<div class="review-name" id="review-name"></div>
-			<div class="review-description" id="review-description"></div>
-
-			<div class="ratingFlex" id="ratingFlex">
-				<h5 id="performance-rating-text">Performance Rating:</h5>
-				<div id="performance-rating-value" class="star-rating">★</div>
-
-				<h5 id="customer-service-rating-text">Customer Service Rating:</h5>
-				<div id="customer-service-rating-value" class="star-rating">★</div>
-
-				<h5 id="support-service-rating-text">Support Service Rating:</h5>
-				<div id="support-service-rating-value" class="star-rating">★</div>
-
-				<h5 id="after-sale-support-rating-text">After Sale Support Rating:</h5>
-				<div id="after-sale-support-rating-value" class="star-rating">★</div>
-			</div>
-
-			<div id="review-date" class="review-date"></div>
-		</div>-->
 
 </div>
 
 
 
-
-
-
-
-
-
-
-	</div>
-
-	</body>
-	</html>
+</body>
+</html>

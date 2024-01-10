@@ -86,11 +86,13 @@ header {
     padding: 15px;
     margin: 20px;
     background-color: white;
-    width: 1850px;
+    width: auto;
     position: center;
     text-align: center;
 }
-
+#reviews-title {
+    margin-left: 20px;
+}
 #existing-reviews {
     border: 2px solid #ccc;
     border-radius: 15px;
@@ -152,6 +154,7 @@ button {
 .review-date {
     font-size: 12px;
     color: #888;
+    margin-bottom: 10px;
 }
 
 .star-rating {
@@ -164,4 +167,33 @@ button {
 .ratingFlex {
     display: flex;
     gap: 5px;
+    margin-top: -10px;
+}
+
+.reviewID {
+    display: none;
+}
+
+.reply-box {
+    border: 2px solid #ccc;
+    border-radius: 15px;
+    padding: 15px;
+    margin: 20px;
+    width: 300px;
+    display: none;
+}
+.reply-button {
+    background-color: #007BFF;
+    color: #fff;
+    padding: 10px 20px;
+    border: 2px solid #ccc;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 1rem;
+    width: min-content;
+}
+
+.reply-name {
+    font-weight: bold;
+    margin-bottom: 5px;
 }
