@@ -24,6 +24,21 @@ app.post('/review-submit', (req, res) => {
     });
 });
 
+app.post('/reply-submit', (req, res) => {
+
+    const jsonData = req.body;
+
+    res.json({ success: true, message: 'JSON delivered.' });
+
+    //console.log(jsonData, "Here");
+    const sql = 'INSERT INTO replies(review_id, reply_username, reply_description, reply_approval, product_id) VALUES(?, ?, ?, ?, ?)';
+    const parameters = [jsonData.key1, jsonData.key2, jsonData.key3, false, jsonData.key4]
+
+    db.run(sql, parameters, (err) => {
+        if (err) return console.error(err.message);
+    });
+});
+
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, '/public/index.html'));
 });
@@ -104,7 +119,7 @@ app.get('/api/products/all', (req, res) => {
 
 });
 
-//Gets review data
+//Gets review data based on product id and approval.
 app.get('/api/reviews', (req, res) => {
 
     db.all('SELECT * FROM reviews WHERE product_id = ? AND review_approval = ?', [currentProduct, 1], (err, rows) => {
@@ -117,6 +132,18 @@ app.get('/api/reviews', (req, res) => {
     });
 });
 
+//Gets reply data based on product id and approval. This will then get sorted by review once all the data is passed through.
+app.get('/api/replies', (req, res) => {
+
+    db.all('SELECT * FROM replies WHERE product_id = ? AND reply_approval = ?', [currentProduct, 1], (err, rows) => {
+        if (err) {
+            console.error('Error executing query:', err);
+            res.status(500).json({ error: 'Internal Server Error' });
+        } else {
+            res.json(rows);
+        }
+    });
+});
 
 app.listen(8080, () => { 
     console.log('Server is listening on port 8080');

@@ -20,12 +20,6 @@
 		Shelton Tool-Hire
 	</div>
 
-	<div class="search-container">
-		<div class="" custom-search-bar>
-			<input type="text" class="search-input" placeholder="Enter your search term">
-			<button class="search-button" onclick="performSearch()">Search</button>
-		</div>
-	</div>
 
 </header>
 
@@ -218,7 +212,7 @@
 <div id="existing-reviews">
 	<h1 id="reviews-title">Reviews</h1>
 
-	<script>
+<script>
 
 		const reviewContainer = document.getElementById('existing-reviews');
 
@@ -247,6 +241,14 @@
 				reviewDescription.textContent = reviewArray.review_description;
 				reviewBox.appendChild(reviewDescription);
 
+                //const reviewID = document.createElement('div');
+                //reviewID.className = 'reviewID';
+                //reviewID.textContent = reviewArray.review_id;
+                //reviewBox.appendChild(reviewID);
+
+				reviewBox.setAttribute('data-review-id', reviewArray.review_id);
+                reviewBox.setAttribute('data-product-id', reviewArray.product_id);
+
 				//fd
 
 				const star = '★';
@@ -255,10 +257,6 @@
 				ratingFlex.className = 'ratingFlex';
 				ratingFlex.id = 'ratingFlex';
 
-                const reviewID = document.createElement('div');
-				reviewID.className = 'reviewID';
-				reviewID.textContent = reviewArray.review_id;
-				ratingFlex.appendChild(reviewID);
 				//performance-rating
 				var performanceText = document.createElement('h5');
 				performanceText.id = 'performance-rating-text';
@@ -317,33 +315,38 @@
 
             functionCreateReplyBox();
 
-
-
 		}
 
         function functionCreateReplyBox(){
             const reviews = document.getElementsByClassName('review-box');
             Array.from(reviews).forEach(review => {
+				
 
                 var replyBox = document.createElement('div');
 				replyBox.className = 'reply-box';
 
+				//const replyForm = document.createElement('form');
+				//replyForm.id = 'reply-form';
+
                 var replyButton = document.createElement('div');
                 replyButton.className = 'reply-button';
-                replyButton.textContent = 'Reply';
+				replyButton.textContent = 'Reply';
 
                 var usernameInput = document.createElement('textarea');
                 usernameInput.type = 'text';
 				usernameInput.placeholder = 'Your Username';
 				usernameInput.id = 'reply-name';
 				usernameInput.rows = 1;
+				usernameInput.required = true;
+
                 var replyInput = document.createElement('textarea');
 				replyInput.placeholder = 'Your Reply';
-				
+				replyInput.id = 'reply-descriptiion';
+				replyInput.required = true;
 
                 var submitButton = document.createElement('button');
 				submitButton.textContent = 'Submit Reply';
-				submitButton.type = 'submit';
+                //submitButton.type = 'click';
 
                 replyBox.appendChild(usernameInput);
                 replyBox.appendChild(replyInput);
@@ -352,10 +355,89 @@
                 review.appendChild(replyButton);
 				review.appendChild(replyBox);
 
-                replyButton.addEventListener('click', function () {
-                    replyBox.style.display = replyBox.style.display === 'block' ? 'none' : 'block';
+				submitButton.addEventListener('click', function () {
+
+					const parent = this.parentElement.parentElement;
+					
+					const reply_review_id = parent.getAttribute('data-review-id');
+					const reply_username = usernameInput.value;
+					const reply_description = replyInput.value;
+					const reply_product_id = parent.getAttribute('data-product-id');
+
+                    if (reply_username.trim() === '' || reply_description.trim() === '') {
+						alert('Please fill in all the required fields.');
+					}
+					else {
+                        const replyData = {
+                            "key1": reply_review_id,
+                            "key2": reply_username,
+							"key3": reply_description,
+							"key4": reply_product_id
+                        };
+
+                        fetch('/reply-submit', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify(replyData)
+                        })
+                            .then(response => response.json())
+                            .then(data => {
+                                console.log('Server response:', data);
+                                alert('Reply Submitted! It will be reviewed by our team before showing on the page.');
+                            })
+                            .catch(error => console.error('Error: ', error));
+					}
                 });
-            });
+
+                replyButton.addEventListener('click', function () {
+					replyBox.style.display = replyBox.style.display === 'block' ? 'none' : 'block';
+				});
+
+
+			});
+
+            fetch('/api/replies')
+                .then(response => response.json())
+                .then(replies => {
+                    loadReplies(replies);
+				});
+
+		}
+
+		function loadReplies(data) {
+
+
+			const allReviews = document.getElementsByClassName('review-box');
+
+			Array.from(allReviews).forEach(review => {
+
+                const reviewID = review.getAttribute('data-review-id');
+                data.forEach(replyArray => {
+
+					if (replyArray.review_id == reviewID) {
+                        const existingReplyBox = document.createElement('div');
+                        existingReplyBox.className = 'existing-reply-box';
+
+						const replyName = document.createElement('div');
+						replyName.className = 'reply-name';
+						replyName.textContent = replyArray.reply_username;
+						existingReplyBox.appendChild(replyName);
+
+                        const replyDescription = document.createElement('div');
+                        replyDescription.className = 'reply-description';
+                        replyDescription.textContent = replyArray.reply_description;
+                        existingReplyBox.appendChild(replyDescription);
+
+						review.appendChild(existingReplyBox);
+					}
+                });
+
+
+			});
+
+
 		}
 
 

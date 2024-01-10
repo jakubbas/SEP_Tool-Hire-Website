@@ -147,7 +147,16 @@ button {
     margin-bottom: 5px;
 }
 
+.reply-name {
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
 .review-description {
+    margin-bottom: 10px;
+}
+
+.reply-description {
     margin-bottom: 10px;
 }
 
@@ -182,6 +191,15 @@ button {
     width: 300px;
     display: none;
 }
+
+.existing-reply-box {
+    border: 2px solid #ccf;
+    border-radius: 15px;
+    padding: 15px;
+    margin: 20px;
+    width: 500px;
+}
+
 .reply-button {
     background-color: #007BFF;
     color: #fff;

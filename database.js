@@ -59,7 +59,7 @@ db.get("PRAGMA foreign_keys = ON")
 //});
 
 
-sql = 'SELECT * FROM reviews';
+sql = 'SELECT * FROM replies';
 db.all(sql, [], (err, rows) => {
     if (err) return console.error(err.message);
     rows.forEach(row => {
@@ -105,8 +105,16 @@ db.all(sql, [], (err, rows) => {
 //    if (err) return console.error(err.message);
 //});
 
+//sql = 'CREATE TABLE replies (reply_id INTEGER PRIMARY KEY,review_id INTEGER,reply_username TEXT,reply_description TEXT,reply_approval BOOLEAN)';
+//db.run(sql);
 
+//db.run('UPDATE replies SET reply_approval = ? WHERE reply_id = ?', [1, 6], (err) => {
+//    if (err) return console.error(err.message);
+//});
+
+//db.run('ALTER TABLE replies ADD COLUMN product_id INTEGER');
 
 //db.run('DELETE FROM reviews');
 
 //GatherMainRows();
+
