@@ -2,9 +2,27 @@ const express = require('express');
 const path = require('path')
 const app = express();
 const sqlite3 = require('sqlite3').verbose();
+const bodyParser = require('body-parser');
 const db = new sqlite3.Database(__dirname + '/src/database.db', sqlite3.OPEN_READWRITE, (err) => { if (err) return console.error(err.message); });
 var currentCategory;
 var currentProduct;
+
+app.use(bodyParser.json());
+
+app.post('/review-submit', (req, res) => {
+
+    const jsonData = req.body;
+
+    res.json({ success: true, message: 'JSON delivered.' });
+
+    //console.log(jsonData, "Here");
+    const sql = 'INSERT INTO reviews(product_id, review_username, review_description, review_performance_rating, review_customer_service_rating, review_support_service_rating, review_after_sale_support_service_rating, review_date, review_approval) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)';
+    const parameters = [currentProduct, jsonData.key1, jsonData.key2, jsonData.key3, jsonData.key4, jsonData.key5, jsonData.key6, jsonData.key7, false]
+
+    db.run(sql, parameters, (err) => {
+        if (err) return console.error(err.message);
+    });
+});
 
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, '/public/index.html'));
@@ -20,7 +38,6 @@ app.get('/category-page', (req, res) => {
 });
 
 app.get('/product-page', (req, res) => {
-    console.log("here");
     //DEBUG STATEMENT HERE FOR TEST LOG
     const productID = req.query.productID;
     //console.log("ID: ", productID)
@@ -85,6 +102,19 @@ app.get('/api/products/all', (req, res) => {
         }
     });
 
+});
+
+//Gets review data
+app.get('/api/reviews', (req, res) => {
+
+    db.all('SELECT * FROM reviews WHERE product_id = ? AND review_approval = ?', [currentProduct, 1], (err, rows) => {
+        if (err) {
+            console.error('Error executing query:', err);
+            res.status(500).json({ error: 'Internal Server Error' });
+        } else {
+            res.json(rows);
+        }
+    });
 });
 
 

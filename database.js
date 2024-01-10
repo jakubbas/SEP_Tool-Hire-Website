@@ -59,14 +59,13 @@ db.get("PRAGMA foreign_keys = ON")
 //});
 
 
-sql = 'SELECT * FROM products';
+sql = 'SELECT * FROM reviews';
 db.all(sql, [], (err, rows) => {
     if (err) return console.error(err.message);
     rows.forEach(row => {
         console.log(row);
     })
 });
-
 
 //function GatherMainRows()
 //{
@@ -92,5 +91,22 @@ db.all(sql, [], (err, rows) => {
 
 //}
 
+//sql = 'CREATE TABLE reviews(review_id INTEGER PRIMARY KEY, product_id INTEGER, review_username TEXT, review_description TEXT, review_performance_rating INTEGER, review_customer_service_rating INTEGER, review_support_service_rating INTEGER, review_after_sale_support_service_rating INTEGER, review_date TEXT, review_approval BOOLEAN)';
+//db.run(sql);
+
+//db.run('drop table reviews');
+
+//sql = 'INSERT INTO reviews(product_id, review_username, review_description, review_performance_rating, review_customer_service_rating, review_support_service_rating, review_after_sale_support_rating, review_date, review_approval) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)';
+//sql = 'CREATE TABLE comments(comment_id INTEGER PRIMARY KEY, review_id INTEGER, comment_username TEXT, comment_description TEXT, comment_approval BOOLEAN)';
+//db.run(sql);
+
+//sql = 'UPDATE reviews SET review_approval = ? WHERE review_id = ?';
+//db.run('UPDATE reviews SET review_approval = ? WHERE review_id = ?', [1, 5], (err) => {
+//    if (err) return console.error(err.message);
+//});
+
+
+
+//db.run('DELETE FROM reviews');
 
 //GatherMainRows();
