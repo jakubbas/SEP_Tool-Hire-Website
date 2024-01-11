@@ -28,6 +28,27 @@ header {
     max-width: 100px;
 }
 
+table {
+    width: 60%;
+    border-collapse: collapse;
+    margin: 20px auto;
+}
+
+th, td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+    font-size: 24px;
+    text-underline: black;
+}
+
+th {
+    background-color: #749AD2;
+    font-size: 24px;
+    text-align: center;
+    text-underline: black;
+}
+
 .main-container {
     font-family: Arial, sans-serif;
     margin: 0;
@@ -66,6 +87,33 @@ header {
     margin: 20px;
     background-color: white;
     max-height: 100%;
+    text-align: center;
+}
+
+#start-date {
+
+}
+
+#end-date {
+
+}
+
+.calculator-result {
+    border: 2px solid #ccc;
+    border-radius: 15px;
+    padding: 15px;
+    margin: 20px;
+    background-color: white;
+    width: auto;
+    margin-top: 20px;
+    font-weight: bold;
+    
+}
+
+input, select {
+    margin-bottom: 15px;
+    padding: 8px;
+    font-size: 16px;
 }
 
 #product-image {
@@ -78,6 +126,19 @@ header {
     flex: 1;
     display: flex;
     flex-direction: column;
+}
+
+#result {
+    margin-top: 20px;
+    font-weight: bold;
+}
+
+label {
+
+}
+
+input, select {
+    margin-bottom: 10px;
 }
 
 #reviews-section {

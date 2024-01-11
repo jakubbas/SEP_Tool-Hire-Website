@@ -74,9 +74,137 @@
 	</div>
 
 	<div id="product-costing-container">
-		<p>
-			Costing
-		</p>
+		<h2>
+			Cost Calculator
+		</h2>
+
+
+		<label for="start-date">Start Date:</label>
+		<input type="date" id="start-date">
+
+		<label for="start-hour">Start Hour:</label>
+		<input type="time" id="start-hour">
+
+		<label for="end-date">End Date:</label>
+		<input type="date" id="end-date">
+
+		<label for="end-hour">End Hour:</label>
+		<input type="time" id="end-hour">
+
+		<button onclick="calculateCost()">Calculate Cost</button>
+
+		<div id="calculator-result" class="calculator-result"></div>
+		
+		<div class="rates-table" id="rates-table">
+			<table>
+				<thead>
+				<tr>
+					<th>Hourly Rate</th>
+					<th>Daily Rate</th>
+					<th>Weekly Rate</th>
+				</tr>
+				</thead>
+				<tbody>
+				<tr>
+					<td id="hourly-id"></td>
+					<td id ="daily-id"></td>
+					<td id="weekly-id"></td>
+				</tr>
+				</tbody>
+			</table>
+			
+		</div>
+		
+		
+
+		<script>
+
+            fetch('/api/products/single')
+                .then(response => response.json())
+                .then(products => {
+                    loadProductRates(products);
+                });
+
+			function loadProductRates(data) {
+
+                const rateContainer = document.getElementById('product-costing-container');
+                rateContainer.setAttribute('data-daily', Math.round(data[0].product_price_daily));
+				rateContainer.setAttribute('data-weekly', data[0].product_price_weekly);
+
+				const dailyRate = '£' + data[0].product_price_daily;
+				const hourlyRateUnrounded = data[0].product_price_daily / 24;
+                const hourlyRate = '£' + Math.round((hourlyRateUnrounded + Number.EPSILON) * 100) / 100;
+                const weeklyRate = '£' + data[0].product_price_weekly;
+
+                hourlyContainer = document.getElementById('hourly-id');
+                dailyContainer = document.getElementById('daily-id');
+                weeklyContainer = document.getElementById('weekly-id');
+
+                hourlyContainer.textContent = hourlyRate;
+                dailyContainer.textContent = dailyRate;
+                weeklyContainer.textContent = weeklyRate;
+
+
+			}
+
+
+			function calculateCost() {
+				const rateContainer = document.getElementById('product-costing-container');
+				const calculatedValueContainer = document.getElementById('calculator-result');
+
+                const dailyRate = rateContainer.getAttribute('data-daily');
+				const hourlyRate = dailyRate / 24;
+				const weeklyRate = rateContainer.getAttribute('data-weekly');
+
+				const startDate = document.getElementById('start-date').value;
+                const endDate = document.getElementById('end-date').value;
+                const startHour = document.getElementById('start-hour').value;
+                const endHour = document.getElementById('end-hour').value;
+
+				let rate = 0;
+
+				function combineDateTime(dateString, hourString) {
+                    const combinedString = `${dateString}T${hourString}`;
+					const date = new Date(combinedString);
+					return date;
+				}
+
+                const start = combineDateTime(startDate, startHour)
+                const end = combineDateTime(endDate, endHour)
+
+				const combined = end - start;
+
+				const hourDifference = combined / (1000 * 60 * 60);
+
+				let finalCost = 0;
+
+				///Weekly Rate
+				if (hourDifference >= 24 * 7) {
+					rate = weeklyRate;
+					finalCost = hourDifference / (24 * 7);
+					finalCost = finalCost * rate;
+				}
+                ///Daily rate
+				else if (hourDifference >= 24) {
+					rate = dailyRate;
+                    finalCost = hourDifference / 24;
+                    finalCost = finalCost * rate;
+				}
+
+                ///Hourly Rate
+				else if (hourDifference > 0) {
+					rate = hourlyRate;
+					finalCost = hourDifference * rate;
+				}
+
+
+                calculatedValueContainer.textContent = '£' + Math.round((finalCost + Number.EPSILON) * 100) / 100;
+
+			}
+
+		
+		</script>
+
 	</div>
 
 </div>

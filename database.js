@@ -28,10 +28,12 @@ db.get("PRAGMA foreign_keys = ON")
 //    if (err) return console.error(err.message);
 //});
 
-//sql = 'UPDATE products SET product_link = ? WHERE product_id = ?';
-//db.run('UPDATE products SET product_link = ? WHERE product_id = ?', ['/product-page?productID=18', 18], (err) => {
-//    if (err) return console.error(err.message);
-//});
+sql = 'UPDATE products SET product_price_weekly = ? WHERE product_id = ?';
+db.run('UPDATE products SET product_price_weekly = ? WHERE product_id = ?', [100, 1], (err) => {
+    if (err) return console.error(err.message);
+});
+
+
 
 //db.run(`
 //  CREATE TABLE IF NOT EXISTS categories (
@@ -59,7 +61,7 @@ db.get("PRAGMA foreign_keys = ON")
 //});
 
 
-sql = 'SELECT * FROM replies';
+sql = 'SELECT * FROM products';
 db.all(sql, [], (err, rows) => {
     if (err) return console.error(err.message);
     rows.forEach(row => {
