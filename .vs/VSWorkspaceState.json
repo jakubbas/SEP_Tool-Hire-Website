@@ -3,8 +3,9 @@
     "",
     "\\public",
     "\\public\\css",
+    "\\public\\images",
     "\\src"
   ],
-  "SelectedNode": "\\src\\indextemplate.html",
+  "SelectedNode": "\\public\\css\\productstyles.css",
   "PreviewInSolutionExplorer": false
 }
